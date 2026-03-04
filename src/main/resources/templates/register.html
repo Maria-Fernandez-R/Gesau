@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+
+	<div class="h-100 d-flex justify-content-center align-items-center">
+		<div class="card shadow p-4" style="width: 380px;">
+
+			<div class="text-center mb-4">
+				<i class="bi bi-person-circle display-3 text-secondary"></i>
+				<h4 class="mt-2">GesAu</h4>
+			</div>
+			
+			<div class="text-center mb-4 text-secondary">
+				<h4>Crear cuenta</h4>
+			</div>
+
+			<form th:action="@{/register}" th:object="${user}" method="post">
+
+				<div class="input-group mb-3">
+					<span class="input-group-text">
+						<i class="bi bi-person-fill"></i>
+					</span>
+					<input type="text" th:field="*{username}" class="form-control" placeholder="Usuario" required>
+				</div>
+
+				<div class="input-group mb-3">
+					<span class="input-group-text">
+						<i class="bi bi-lock-fill"></i>
+					</span>
+					<input type="password" th:field="*{password}" class="form-control" placeholder="Contraseña"
+						required>
+				</div>
+
+				<button class="btn btn-primary w-100" type="submit">
+					Registrarse
+				</button>
+
+				<p class="register mt-3" th:if="${error=='S'}">No se ha podido registrar el usuario</p>
+				<p class="register mt-3" th:if="${creado=='S'}">Usuario creado correctamente</p>
+
+				<div class="text-center mt-3">
+					<spam> ¿Ya tienes cuenta?
+						<a th:href="@{/login}">Iniciar sesión</a>
+					</spam>
+				</div>
+
+
+			</form>
+
+		</div>
+	</div>
+
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery-4.0.0.min.js}"></script>
+
+</body>
+
+</html>

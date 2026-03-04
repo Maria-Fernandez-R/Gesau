@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container-fluid align-items-center mt-5 p-5">
+
+		<div class="row text-center m-4">
+			<div class="col-12">
+				<h2>CARGA DE AUTORIZACIONES</h2>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="card col-4 m-4 p-4 text-center">
+				<form th:action="@{/autorizaciones/carga}" method="post" enctype="multipart/form-data">
+				  <div class="input-group mb-4">
+					<div class="input-group-prepend">
+					    <label class="btn btn-dark input-group-text" for="inputCargaExcelCodificacion">Cargar fichero...</label>												
+					</div>
+				    <input type="text" for="inputCargaExcelCodificacion" class="form-control" id="textofichero" 
+					placeholder=""
+					readonly></input>						
+				  </div>
+				    <input type="file" 
+					class="form-control-file d-none" 
+					id="inputCargaExcelCodificacion" 
+					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+					name="ficheroCodificacion"
+					>
+					
+				  <button type="submit" id="procesarCod" class="btn btn-primary mb-2">Procesar codificación</button>
+				</form>
+				
+				<div class="alert alert-success" role="alert" th:if="${errores!=null and errores.size()==0}">Se han procesado correctamente todas las codificaciones</div>
+				<div class="alert alert-warning" role="alert" th:if="${errores!=null and errores.size()>0}" 
+				th:text="${'Se han detectado '+errores.size()+' errores en el proceso de carga de autorizaciones, por favor verifique los campos obligatorios'}"></div>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery-4.0.0.min.js}"></script>
+	<script>
+		$(document).ready(function(){
+			
+			$("#procesarCod").prop('disabled',true);//iniciar boton deshabilitado hasta que se selecciona fichero
+			
+			$('#inputCargaExcelCodificacion').change(function(e){//captura los cambios en el input
+				//console.log($(this));
+				let $fichero = $(this)[0];//obtiene el fichero cargado
+				
+				if($fichero.files.length > 0){//si hay fichero cargado
+					$('#textofichero').val($fichero.files[0].name);//actualiza texto del input de ayuda
+					$("#procesarCod").prop('disabled',false);//habilita boton de procesar					
+				} else {
+					$('#textofichero').val('');//si no hay fichero cargado limpia el texto del input de ayuda		
+					$("#procesarCod").prop('disabled',true);//deshabilita boton de procesar			
+				}
+				
+			})
+			
+		});
+	</script>
+</body>
+
+</html>

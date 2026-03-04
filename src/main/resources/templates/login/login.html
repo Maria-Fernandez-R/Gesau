@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+
+
+	<div sec:authorize="!isAuthenticated()" class="h-100 d-flex justify-content-center align-items-center">
+
+		<div class="card shadow p-4" style="width: 380px;">
+
+			<div class="text-center mb-4">
+				<i class="bi bi-person-circle display-3 text-secondary"></i>
+				<h4 class="mt-2">GesAu</h4>
+			</div>
+
+			<div class="text-center mb-4 text-secondary">
+				<h4>Iniciar sesión</h4>
+			</div>
+
+			<form th:action="@{/login}" method="post">
+
+				<div class="input-group mb-3">
+					<span class="input-group-text">
+						<i class="bi bi-person-fill"></i>
+					</span>
+					<input type="text" name="username" class="form-control" placeholder="Usuario" required>
+				</div>
+
+				<div class="input-group mb-3">
+					<span class="input-group-text">
+						<i class="bi bi-lock-fill"></i>
+					</span>
+					<input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+				</div>
+
+				<button class="btn btn-primary w-100" type="submit">
+					Iniciar sesión
+				</button>
+
+				<div class="text-center mt-3">
+					<spam>¿No tienes cuenta?
+						<a th:href="@{/register}">Registrarse</a>
+					</spam>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery-4.0.0.min.js}"></script>
+</body>
+
+</html>

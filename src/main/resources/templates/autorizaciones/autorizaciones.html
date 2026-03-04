@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container-fluid align-items-center mt-5 p-5">
+
+		<div class="row text-center m-4">
+			<div class="col-12">
+				<h2>AUTORIZACIONES</h2>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-8">
+				<table class="table">
+					<thead class="text-center">
+						<tr>
+							<th scope="col">Código MEYSS</th>
+							<th scope="col">Permiso</th>
+							<th scope="col">Vía</th>
+							<th scope="col">Modelo</th>
+							<th scope="col">Plazo</th>
+							<th scope="col">Silencio</th>
+							<th scope="col">Epígrafe tasa 052</th>
+							<th scope="col">Epígrafe tasa 062</th>			
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-center" th:if="${autorizaciones!=null}" th:each="aut : ${autorizaciones}">
+							<th th:text="${aut.codMeyss}"></th>
+							<td th:text="${aut.permiso.id}" th:title="${aut.permiso.desPermiso}"></td>
+							<!--<td th:text="${aut.permiso.id + ' (' + aut.permiso.desPermiso + ')'}"></td>-->
+							<td th:text="${aut.viaAcceso.id}"></td>
+							<td th:text="${aut.modelo.id}"></td>
+							<td th:text="${aut.plazoCompleto}"></td>
+							<td th:text="${aut.silencio}"></td>
+							<td th:text="${aut.epigrafeTasa052}"></td>
+							<td th:text="${aut.epigrafeTasa062}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery-4.0.0.min.js}"></script>
+
+
+
+</body>
+
+</html>
