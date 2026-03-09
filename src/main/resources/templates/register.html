@@ -8,7 +8,7 @@
 <body>
 
 	<div class="h-100 d-flex justify-content-center align-items-center">
-		<div class="card shadow p-4" style="width: 380px;">
+		<div class="card shadow p-4 border-dark" style="width: 380px;">
 
 			<div class="text-center mb-4">
 				<i class="bi bi-person-circle display-3 text-secondary"></i>
@@ -40,8 +40,9 @@
 					Registrarse
 				</button>
 
-				<p class="register mt-3" th:if="${error=='S'}">No se ha podido registrar el usuario</p>
-				<p class="register mt-3" th:if="${creado=='S'}">Usuario creado correctamente</p>
+				<p class="register mt-3 alert alert-danger" role="alert" th:if="${error=='S'}">No se ha podido registrar el usuario</p>
+				<p class="register mt-3 alert alert-success" role="alert" th:if="${creado=='S'}">
+				Usuario creado correctamente</p>
 
 				<div class="text-center mt-3">
 					<spam> ¿Ya tienes cuenta?

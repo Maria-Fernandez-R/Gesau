@@ -4,45 +4,54 @@
 
 <head>
 	<th:block th:replace="~{fragments/head :: head}"></th:block>
+	<link rel="stylesheet" th:href="@{/css/vendor/dataTables.bootstrap5.css}">
 </head>
 
 <body>
 	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 
-	<div class="container-fluid align-items-center mt-5 p-5">
+	<div class="container-fluid align-items-center mt-3 p-3">
 
-		<div class="row text-center m-4">
+		<div class="row text-center m-2">
 			<div class="col-12">
 				<h2>AUTORIZACIONES</h2>
+			</div>
+		</div>
+		<div class="row text-center m-2 mb-4">
+			<div class="col-12">
+				<form th:action="@{/autorizaciones/borrarAutorizaciones}" th:method="post">
+					<button class="btn btn-danger my-2 my-sm-0" type="submit">
+						Borrar autorizaciones
+					</button>
+				</form>
 			</div>
 		</div>
 
 		<div class="row justify-content-center">
 			<div class="col-8">
-				<table class="table">
+				<table class="table table-bordered table-hover" id="autorizacionesTable" style="border: 1px solid #333;">
 					<thead class="text-center">
-						<tr>
-							<th scope="col">Código MEYSS</th>
-							<th scope="col">Permiso</th>
-							<th scope="col">Vía</th>
-							<th scope="col">Modelo</th>
-							<th scope="col">Plazo</th>
-							<th scope="col">Silencio</th>
-							<th scope="col">Epígrafe tasa 052</th>
-							<th scope="col">Epígrafe tasa 062</th>			
+						<tr style="border: 1px solid #333;">
+							<th scope="col" style="border: 1px solid #333;">Código MEYSS</th> 
+							<th scope="col" style="border: 1px solid #333;">Permiso</th>
+							<th scope="col" style="border: 1px solid #333;">Vía</th>
+							<th scope="col" style="border: 1px solid #333;">Modelo</th>
+							<th scope="col" style="border: 1px solid #333;">Plazo</th>
+							<th scope="col" style="border: 1px solid #333;">Silencio</th>
+							<th scope="col" style="border: 1px solid #333;">Epígrafe tasa 052</th>
+							<th scope="col" style="border: 1px solid #333;">Epígrafe tasa 062</th>			
 						</tr>
 					</thead>
 					<tbody>
-						<tr class="text-center" th:if="${autorizaciones!=null}" th:each="aut : ${autorizaciones}">
-							<th th:text="${aut.codMeyss}"></th>
-							<td th:text="${aut.permiso.id}" th:title="${aut.permiso.desPermiso}"></td>
-							<!--<td th:text="${aut.permiso.id + ' (' + aut.permiso.desPermiso + ')'}"></td>-->
-							<td th:text="${aut.viaAcceso.id}"></td>
-							<td th:text="${aut.modelo.id}"></td>
-							<td th:text="${aut.plazoCompleto}"></td>
-							<td th:text="${aut.silencio}"></td>
-							<td th:text="${aut.epigrafeTasa052}"></td>
-							<td th:text="${aut.epigrafeTasa062}"></td>
+						<tr class="text-center" th:if="${autorizaciones!=null}" th:each="aut : ${autorizaciones}" style="border: 1px solid #333;" >
+							<th th:text="${aut.codMeyss}" style="border: 1px solid #333;"></th>
+							<td th:text="${aut.permiso.id}" th:title="${aut.permiso.desPermiso}"style="border: 1px solid #333;"></td>
+							<td th:text="${aut.viaAcceso.id}"style="border: 1px solid #333;"></td>
+							<td th:text="${aut.modelo.id}" style="border: 1px solid #333;"></td> 
+							<td th:text="${aut.plazoCompleto}" style="border: 1px solid #333;"></td>
+							<td th:text="${aut.silencio}" style="border: 1px solid #333;"></td>
+							<td th:text="${aut.epigrafeTasa052}" style="border: 1px solid #333;"></td>
+							<td th:text="${aut.epigrafeTasa062}" style="border: 1px solid #333;"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -51,11 +60,33 @@
 	</div>
 
 
-	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	
+	
+	
 	<script th:src="@{/js/vendor/jquery-4.0.0.min.js}"></script>
-
-
-
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/dataTables.js}"></script>
+	<script th:src="@{/js/vendor/dataTables.bootstrap5.js}"></script>
+	<script>
+		$(document).ready(function () {
+		    $('#autorizacionesTable').DataTable({
+		        language: {
+		            search: "Buscar:",
+		            lengthMenu: "Mostrar _MENU_ registros",
+		            info: "Mostrando _START_ a _END_ de _TOTAL_ registros",
+		            infoEmpty: "Mostrando 0 a 0 de 0 registros",
+		            infoFiltered: "(filtrado de _MAX_ registros totales)",
+		            zeroRecords: "No se encontraron resultados",
+		            paginate: {
+		                first: "Primero",
+		                last: "Último",
+		                next: "Siguiente",
+		                previous: "Anterior"
+		            }
+		        }
+		    });
+		});
+	</script>
 </body>
 
 </html>

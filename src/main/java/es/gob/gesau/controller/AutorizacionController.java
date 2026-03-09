@@ -31,7 +31,7 @@ public class AutorizacionController {
 		this.autorizacionesService = autorizacionesService;
 	}
 
-	@GetMapping("")	
+	@GetMapping(value={"","/"})	
 	public String autorizaciones(Model model) {		
 		
 		model.addAttribute("autorizaciones", autorizacionesService.getAllAutorizaciones());
@@ -51,6 +51,14 @@ public class AutorizacionController {
 		model.addAttribute("errores", autorizacionesService.cargaFicheroCodificacion(ficheroCodificacion));
 		
 		return "autorizaciones/carga";
+	}
+	
+	@PostMapping(value="borrarAutorizaciones")
+	public String borrarAutorizaciones() {
+		
+		autorizacionesService.borrarAutorizaciones();
+		
+		return "redirect:";
 	}
 	
 	

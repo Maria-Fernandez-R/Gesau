@@ -9,40 +9,43 @@
 <body>
 	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 
-	<div class="container-fluid align-items-center mt-5 p-5">
-
-		<div class="row text-center m-4">
-			<div class="col-12">
-				<h2>CARGA DE AUTORIZACIONES</h2>
+	<div class="container-fluid align-items-center mt-3 p-3">
+	
+		<div class="card w-50 container-fluid bg-light border-dark">
+			<div class="row text-center m-4">
+				<div class="col-12">
+					<h2>CARGA DE AUTORIZACIONES</h2>
+				</div>
 			</div>
-		</div>
-
-		<div class="row justify-content-center">
-			<div class="card col-4 m-4 p-4 text-center">
-				<form th:action="@{/autorizaciones/carga}" method="post" enctype="multipart/form-data">
-				  <div class="input-group mb-4">
-					<div class="input-group-prepend">
-					    <label class="btn btn-dark input-group-text" for="inputCargaExcelCodificacion">Cargar fichero...</label>												
-					</div>
-				    <input type="text" for="inputCargaExcelCodificacion" class="form-control" id="textofichero" 
-					placeholder=""
-					readonly></input>						
-				  </div>
-				    <input type="file" 
-					class="form-control-file d-none" 
-					id="inputCargaExcelCodificacion" 
-					accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-					name="ficheroCodificacion"
-					>
+	
+			<div class="row justify-content-center">
+				<div class="card col-8 m-4 p-4 text-center border-dark">
+					<form th:action="@{/autorizaciones/carga}" method="post" enctype="multipart/form-data">
+					  <div class="input-group mb-4">
+						<div class="input-group-prepend">
+						    <label class="btn btn-dark input-group-text" for="inputCargaExcelCodificacion">Seleccionar fichero...</label>												
+						</div>
+					    <input type="text" for="inputCargaExcelCodificacion" class="form-control" id="textofichero" 
+						placeholder=""
+						readonly></input>						
+					  </div>
+					    <input type="file" 
+						class="form-control-file d-none" 
+						id="inputCargaExcelCodificacion" 
+						accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+						name="ficheroCodificacion"
+						>
+						
+					  <button type="submit" id="procesarCod" class="btn btn-primary mb-2">Cargar datos</button>
+					</form>
 					
-				  <button type="submit" id="procesarCod" class="btn btn-primary mb-2">Procesar codificación</button>
-				</form>
-				
-				<div class="alert alert-success" role="alert" th:if="${errores!=null and errores.size()==0}">Se han procesado correctamente todas las codificaciones</div>
-				<div class="alert alert-warning" role="alert" th:if="${errores!=null and errores.size()>0}" 
-				th:text="${'Se han detectado '+errores.size()+' errores en el proceso de carga de autorizaciones, por favor verifique los campos obligatorios'}"></div>
-			</div>
+					<div class="alert alert-success" role="alert" th:if="${errores!=null and errores.size()==0}">Se han procesado correctamente todas las codificaciones</div>
+					<div class="alert alert-warning" role="alert" th:if="${errores!=null and errores.size()>0}" 
+					th:text="${'Se han detectado '+errores.size()+' errores en el proceso de carga de autorizaciones, por favor verifique los campos obligatorios'}"></div>
+				</div>
+			</div>		
 		</div>
+
 	</div>
 
 

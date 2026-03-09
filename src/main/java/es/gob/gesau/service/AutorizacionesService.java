@@ -152,4 +152,12 @@ public class AutorizacionesService {
 		return errores;
 	}
 
+
+
+	public void borrarAutorizaciones() {
+		
+		autorizacionRepository.deleteAll();
+		
+	}
+
 }

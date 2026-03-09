@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.thymeleaf.org ">
 
 <head>
-	<th:block th:replace="~{fragments/head :: head}"></th:block>
+<th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 
 <body>
 	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
 
 	<div class="container-fluid align-items-center mt-5 p-5">
-		
-		<div class="row text-center m-4">
-			<div class="col-12">
-				<h2>GESTION DE AUTORIZACIONES</h2>		
-			</div>			
+
+		<div class="card container-fluid border-dark bg-light col-7 pl-5 pr-5 pb-5">
+			<div class="row text-center m-4">
+				<div class="col-12">
+					<h2>GESTION DE AUTORIZACIONES</h2>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-7">
+					<div class="card border-dark">
+						<div class="card-body">
+							<h5 class="card-title text-center mb-4">Menú</h5>
+							<ul>
+								<li class="card-text m-2"><a th:href="@{/autorizaciones}">Autorizaciones</a></li>
+								<li class="card-text m-2"><a
+									th:href="@{/autorizaciones/carga}">Carga de autorizaciones</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		
-		<div class="row justify-content-center">
-			<div class="col-3">			
-				<div class="card">
-				  <div class="card-body">
-				    <h5 class="card-title text-center mb-4">Menú</h5>
-					<ul>
-					    <li class="card-text m-2"><a th:href="@{/autorizaciones}">Autorizaciones</a></li>						
-					    <li class="card-text m-2"><a th:href="@{/autorizaciones/carga}">Carga de autorizaciones</a></li>					
-					</ul>
-				  </div>
-				</div>		
-			</div>			
-		</div>
+
 	</div>
 
 
