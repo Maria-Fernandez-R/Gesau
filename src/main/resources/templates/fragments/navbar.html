@@ -3,18 +3,28 @@
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container-fluid">
 				<a class="navbar-brand">Gesau</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-					aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+					aria-controls="navbarNavAltMarkup" aria-expanded="false"
+					aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 					<div class="navbar-nav">
-						<a class="nav-link active" aria-current="page" th:href="@{/index.html}">Inicio</a>
-						<a class="nav-link" th:href="@{/autorizaciones}">Autorizaciones</a>
-						<a class="nav-link" th:href="@{/autorizaciones/carga}">Carga de autorizaciones</a>
+							<a class="nav-link active" aria-current="page"
+							th:href="@{/index.html}">Inicio</a> 
+						<a class="nav-link"
+							th:href="@{/autorizaciones}">Autorizaciones</a> <a
+							class="nav-link" th:href="@{/autorizaciones/carga}">Carga de
+							autorizaciones</a>
 					</div>
 				</div>
+				<form class="form-inline my-2 my-lg-0" th:action="@{/logout}" th:method="POST">
+					<button class="btn btn-outline-primary my-2 my-sm-0" type="submit">
+						<i class="bi bi-box-arrow-left align-middle"></i> Cerrar sesión
+					</button>
+				</form>
 			</div>
-		</nav>		
-	</header>		
+		</nav>
+	</header>
 </th:block>
