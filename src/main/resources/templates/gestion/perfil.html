@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container-fluid align-items-center mt-3 p-3">
+
+		<div class="card w-50 container-fluid bg-light">
+			<div class="row text-center m-4">
+				<div class="col-12">
+					<h2>Perfil de usuario</h2>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="card col-6 m-4 p-4">
+					<div class="row mb-3">
+						<div class="col-12">
+							<label for="userName" class="form-label">Nombre de usuario</label>
+							<input th:value="${userName}" type="text" id="userName" class="form-control" disabled>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-6">
+							<button id="cambiarContrasena" class="btn btn-primary mb-2" data-bs-toggle="modal"
+								data-bs-target="#changePasswordModal">Cambiar contraseña</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="changePasswordModal" class="modal" tabindex="-1">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Cambiar contraseña</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div id="changePasswordModalBody" class="modal-body m-4">
+					<form id="changePasswordForm">
+						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<div class="row g-3 align-items-center">
+							<div class="mb-3">
+								<label for="currentPassword" class="form-label">Contraseña actual</label>
+								<input type="password" name="currentPassword" class="form-control" id="currentPassword"
+									aria-describedby="currentPasswordHelp">
+								<div id="currentPasswordHelp" class="form-text"></div>
+							</div>
+						</div>
+						<div class="row g-3 align-items-center">
+							<div class="mb-3">
+								<label for="newPassword" class="form-label">Nueva contraseña</label>
+								<input type="password" name="newPassword" class="form-control" id="newPassword"
+									aria-describedby="newPasswordHelp">
+								<div id="newPasswordHelp" class="form-text"></div>
+							</div>
+						</div>
+						<div class="row g-3 align-items-center">
+							<div class="mb-3">
+								<label for="confirmNewPassword" class="form-label">Confirmar nueva contraseña</label>
+								<input type="password" name="confirmPassword" class="form-control" id="confirmNewPassword"
+									aria-describedby="confirmNewPasswordHelp">
+								<div id="confirmNewPasswordHelp" class="form-text"></div>
+							</div>
+						</div>
+						<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+						<div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+					<button type="button" id="changePasswordBtn" class="btn btn-primary">Guardar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/jquery-3.7.1.min.js}"></script>
+	<script>
+		$(document).ready(function () {
+
+			$("#procesarCod").prop('disabled', true);//iniciar boton deshabilitado hasta que se selecciona fichero
+
+			$('#inputCargaExcelCodificacion').change(function (e) {//captura los cambios en el input
+				//console.log($(this));
+				let $fichero = $(this)[0];//obtiene el fichero cargado
+
+				if ($fichero.files.length > 0) {//si hay fichero cargado
+					$('#textofichero').val($fichero.files[0].name);//actualiza texto del input de ayuda
+					$("#procesarCod").prop('disabled', false);//habilita boton de procesar					
+				} else {
+					$('#textofichero').val('');//si no hay fichero cargado limpia el texto del input de ayuda		
+					$("#procesarCod").prop('disabled', true);//deshabilita boton de procesar			
+				}
+
+			})
+
+			$('#changePasswordBtn').on('click',function (e) {
+				$.ajax({
+					url:"actualizaContrasena",
+					type:"POST",
+					data:$('#changePasswordForm').serialize(),
+					success: function(data){
+						$('#changePasswordModalBody').html(data);
+					},
+					error:function(){
+						$('#changePasswordModalBody').html('<div class="alert alert-danger">Se ha producido un error inesperado.</div>');
+					}
+
+				});
+			});
+
+		});
+	</script>
+</body>
+
+</html>
