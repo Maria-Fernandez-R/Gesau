@@ -43,6 +43,11 @@ public class AutorizacionController {
 	public String carga() {		
 		return "autorizaciones/carga";
 	}
+
+	@GetMapping("nuevasAutorizaciones")	
+	public String nuevasAutorizaciones() {		
+		return "autorizaciones/nuevasAutorizaciones";
+	}
 	
 	@PostMapping(value="carga", consumes = {"multipart/form-data"})	
 	public String cargaFichero(@RequestParam("ficheroCodificacion") MultipartFile[] ficheroCodificacion,

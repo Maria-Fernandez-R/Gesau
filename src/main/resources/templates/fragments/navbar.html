@@ -13,8 +13,15 @@
 						<li class="nav-item ms-2">
 							<a class="nav-link active" aria-current="page" th:href="@{/index.html}">Inicio</a>
 						</li>
-						<li class="nav-item ms-2">
-							<a class="nav-link" th:href="@{/autorizaciones}">Nuevas autorizaciones</a>
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+								aria-expanded="false">
+								Autorizaciones
+							</a>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" th:href="@{/autorizaciones}">Ver autorizaciones</a></li>
+								<li><a class="dropdown-item" th:href="@{/autorizaciones/nuevasAutorizaciones}">Nuevas autorizaciones</a></li>
+							</ul>
 						</li>
 						<li class="nav-item ms-2">
 							<a class="nav-link" th:href="@{/autorizaciones/tablas}">Mantenimiento de tablas</a>
@@ -28,19 +35,22 @@
 					</ul>
 					<ul class="navbar-nav ms-auto me-3">
 						<li class="nav-item dropdown d-flex align-items-center">
-							<a class="nav-link dropdown-toggle d-flex align-items-center p-0" data-bs-toggle="dropdown" href="#" role="button"
-								aria-expanded="false">
+							<a class="nav-link dropdown-toggle d-flex align-items-center p-0" data-bs-toggle="dropdown"
+								href="#" role="button" aria-expanded="false">
 								<i style="font-size: 1.5rem;" class="bi bi-person-fill"></i>
-								<span class="text-center align-middle ms-1" th:text="${@userService.getUserAndRoleUsuarioLogeado()}"></span>
+								<span class="text-center align-middle ms-1"
+									th:text="${@userService.getUserAndRoleUsuarioLogeado()}"></span>
 							</a>
 							<ul class="dropdown-menu dropdown-menu-end">
-								<li><a class="dropdown-item align-middle ms-1" th:href="@{/gestion/perfil}"><i class="bi bi-person-fill"></i> Perfil</a></li>
+								<li><a class="dropdown-item align-middle ms-1" th:href="@{/gestion/perfil}"><i
+											class="bi bi-person-fill"></i> Perfil</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
 								<li>
 									<form class="form-inline my-2 my-lg-0" th:action="@{/logout}" th:method="POST">
-										<button class="dropdown-item btn btn-outline-primary my-2 my-sm-0 text-center align-middle ms-1"
+										<button
+											class="dropdown-item btn btn-outline-primary my-2 my-sm-0 text-center align-middle ms-1"
 											type="submit">
 											<i class="bi bi-box-arrow-right"></i> Cerrar sesión
 										</button>

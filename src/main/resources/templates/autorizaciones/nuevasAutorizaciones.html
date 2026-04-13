@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+	<th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+
+<body>
+	<th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+
+	<div class="container-fluid align-items-center mt-3 p-3">
+
+		<div class="card w-75 container-fluid bg-light p-4">
+			<div class="row text-center m-4">
+				<div class="col-12">
+					<h2>Nuevas autorizaciones</h2>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-8">
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+						<li class="nav-item" role="presentation">
+							<button class="nav-link active" id="autorizacion-tab" data-bs-toggle="tab"
+								data-bs-target="#autorizacion-tab-pane" type="button" role="tab" aria-controls="home-tab-pane"
+								aria-selected="true">Autorizacion</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="plazo-tab" data-bs-toggle="tab"
+								data-bs-target="#plazo-tab-pane" type="button" role="tab"
+								aria-controls="plazo-tab-pane" aria-selected="false">Plazo</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="modelo-tab" data-bs-toggle="tab"
+								data-bs-target="#modelo-tab-pane" type="button" role="tab"
+								aria-controls="modelo-tab-pane" aria-selected="false">Modelo</button>
+						</li>
+						<li class="nav-item" role="presentation">
+							<button class="nav-link" id="tasas-tab" data-bs-toggle="tab"
+								data-bs-target="#tasas-tab-pane" type="button" role="tab"
+								aria-controls="tasas-tab-pane" aria-selected="false">Tasas</button>
+						</li>
+					</ul>
+					<div class="tab-content" id="myTabContent">
+						<div class="tab-pane fade show active" id="autorizacion-tab-pane" role="tabpanel"
+							aria-labelledby="home-tab" tabindex="0">
+							<div class="p-4">
+								<div class="row g-3 align-items-center">
+									<div class="mb-3">
+										<label for="currentPassword" class="form-label">Permiso</label>
+										<input type="password" name="currentPassword" class="form-control"
+											id="currentPassword" aria-describedby="currentPasswordHelp">
+										<div id="currentPasswordHelp" class="form-text"></div>
+									</div>
+								</div>
+								<div class="row g-3 align-items-center">
+									<div class="mb-3">
+										<label for="newPassword" class="form-label">Via de acceso</label>
+										<input type="password" name="newPassword" class="form-control" id="newPassword"
+											aria-describedby="newPasswordHelp">
+										<div id="newPasswordHelp" class="form-text"></div>
+									</div>
+								</div>
+								<div class="row g-3 align-items-center">
+									<div class="mb-3">
+										<label for="newPassword" class="form-label">Codigo MEYSS</label>
+										<input type="password" name="newPassword" class="form-control" id="newPassword"
+											aria-describedby="newPasswordHelp">
+										<div id="newPasswordHelp" class="form-text"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane fade" id="plazo-tab-pane" role="tabpanel" aria-labelledby="plazo-tab"
+							tabindex="0">plazo</div>
+						<div class="tab-pane fade" id="modelo-tab-pane" role="tabpanel" aria-labelledby="modelo-tab"
+							tabindex="0">modelo</div>
+						<div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="tasas-tab"
+							tabindex="0">tasas</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+	<script th:src="@{/js/vendor/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/js/vendor/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/vendor/dataTables.js}"></script>
+	<script th:src="@{/js/vendor/dataTables.bootstrap5.js}"></script>
+	<script>
+		$(document).ready(function () {
+
+		});
+	</script>
+</body>
+
+</html>
