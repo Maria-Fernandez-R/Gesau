@@ -11,7 +11,7 @@
 				<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 					<ul class="navbar-nav d-flex ms-4">
 						<li class="nav-item ms-2">
-							<a class="nav-link active" aria-current="page" th:href="@{/index.htms}">Inicio</a>
+							<a class="nav-link active" aria-current="page" th:href="@{/index.html}">Inicio</a>
 						</li>
 						<li class="nav-item ms-2">
 							<a class="nav-link" th:href="@{/autorizaciones}">Nuevas autorizaciones</a>
@@ -22,7 +22,7 @@
 						<li class="nav-item ms-2">
 							<a class="nav-link" th:href="@{/autorizaciones/carga}">Carga de autorizaciones</a>
 						</li>
-						<li class="nav-item ms-2">
+						<li class="nav-item ms-2" sec:authorize="hasRole('ROLE_ADMIN')">
 							<a class="nav-link" th:href="@{/gestion/usuarios}">Gestión de usuarios</a>
 						</li>
 					</ul>

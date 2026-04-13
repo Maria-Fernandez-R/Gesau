@@ -1,5 +1,6 @@
 package es.gob.gesau.config.service;
 
+import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,7 @@ import es.gob.gesau.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RoleRepository roleRepository;
@@ -22,23 +23,21 @@ public class UserService {
 	private final String ROLE_ADMIN = "ROLE_ADMIN";
 	private final String ROLE_CONSULTOR = "ROLE_CONSULTOR";
 
-	
-	
 	public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.roleRepository = roleRepository;
 	}
-	
+
 	public UserEntity register(String username, String rawPassword) {
 		UserEntity user = new UserEntity();
 		user.setUsername(username);
 		user.setPassword(passwordEncoder.encode(rawPassword));
 		user.setEnabled(true);
-		
+
 		RoleEntity userRole = roleRepository.findByName("ROLE_USER").orElseThrow();
 		user.getRoles().add(userRole);
-		
+
 		return userRepository.save(user);
 	}
 
@@ -82,18 +81,21 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public String getUserAndRoleUsuarioLogeado(){
+	public String getUserAndRoleUsuarioLogeado() {
 		String userAndRole = "";
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if(authentication!=null){
+		if (authentication != null) {
 			userAndRole += authentication.getName();
 
-			String rol = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst().orElse(ROLE_USER);
+			String rol = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).findFirst()
+					.orElse(ROLE_USER);
 
-			//solo colocar el tipo de usuario cuando no son usuarios comunes: ROLE_USER
-			if(ROLE_ADMIN.equals(rol)) userAndRole+=" (administrador)";
-			if(ROLE_CONSULTOR.equals(rol)) userAndRole+=" (consultor)";
+			// solo colocar el tipo de usuario cuando no son usuarios comunes: ROLE_USER
+			if (ROLE_ADMIN.equals(rol))
+				userAndRole += " (administrador)";
+			if (ROLE_CONSULTOR.equals(rol))
+				userAndRole += " (consultor)";
 		}
 
 		return userAndRole;
@@ -101,6 +103,24 @@ public class UserService {
 
 	public String getUserNameUsuarioLogeado() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
-	}	
+	}
+
+	public List<UserEntity> getAllUsuarios() {
+		return userRepository.findAll();
+	}
+
+	public void updateUserEnabled(Long userId, boolean enabled) {
+		UserEntity user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		String currentUsername = getUserNameUsuarioLogeado();
+
+		if (user.getUsername().equals(currentUsername) && !enabled) {
+			throw new RuntimeException("No puedes desactivar tu propio usuario");
+		}
+
+		user.setEnabled(enabled);
+		userRepository.save(user);
+	}
 
 }

@@ -28,7 +28,7 @@
 								<li class="card-text m-2"><a th:href="@{/autorizaciones}">Nuevas autorizaciones</a></li>
 								<li class="card-text m-2"><a th:href="@{/autorizaciones/tablas}">Mantenimiento de tablas</a></li>
 								<li class="card-text m-2"><a th:href="@{/autorizaciones/carga}">Carga de autorizaciones</a></li>
-								<li class="card-text m-2"><a th:href="@{/gestion/usuarios}">Gestión de usuarios</a></li>
+								<li class="card-text m-2" sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/gestion/usuarios}">Gestión de usuarios</a></li>
 							</ul>
 						</div>
 					</div>
