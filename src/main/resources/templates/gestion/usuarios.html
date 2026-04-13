@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="row justify-content-center">
-				<div class="col-6">
+				<div class="col-8">
 					<table class="table table-bordered table-hover" id="usuariosTable" style="border: 1px solid #333;">
 						<thead class="text-center">
 							<tr style="border: 1px solid #333;">
@@ -151,6 +151,7 @@
 				const $inputgroup = $(this).closest('.input-group');
 				const $input = $inputgroup.find('input');
 
+				$input.prop(disabled)
 				$inputgroup.find('.username-edit-btn').addClass('d-none');
 				$inputgroup.find('.username-save-btn').removeClass('d-none');
 				$inputgroup.find('.username-cancel-btn').removeClass('d-none');
