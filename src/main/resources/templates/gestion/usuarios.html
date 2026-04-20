@@ -30,6 +30,7 @@
 						</thead>
 						<tbody>
 							<tr class="text-center" th:if="${usuarios!=null}" th:each="user : ${usuarios}"
+								th:data-user-id="${user.id}"
 								style="border: 1px solid #333;">
 								<td style="border: 1px solid #333;">
 									<div class="input-group">
@@ -43,7 +44,7 @@
 									<div
 										class="form-check form-switch d-flex align-items-center justify-content-center">
 										<input th:checked="${user.enabled}" class="form-check-input user-enabled-switch"
-											type="checkbox" role="switch" th:data-user-id="${user.id}">
+											type="checkbox" role="switch">
 									</div>
 								</td>
 								<td style="border: 1px solid #333;"><button type="button"
@@ -66,16 +67,17 @@
 		</div>
 	</div>
 
-	<div id="modificarUsuarioModal" class="modal" tabindex="-1">
+	<div id="changePasswordModal" class="modal" tabindex="-1">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Modificar usuario</h5>
+					<h5 class="modal-title">Cambiar contraseña</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div id="changePasswordModalBody" class="modal-body m-4">
 					<form id="changePasswordForm">
 						<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+						<input type="hidden" id="changePasswordUserid" name="userId" th:value="${userId!=null?userId:'null'}" />
 						<div class="row g-3 align-items-center">
 							<div class="mb-3">
 								<label for="currentPassword" class="form-label">Contraseña actual</label>
@@ -119,6 +121,9 @@
 	<script th:src="@{/js/vendor/dataTables.bootstrap5.js}"></script>
 	<script>
 		$(document).ready(function () {
+			const csrfToken = $('meta[name="_csrf"]').attr('content');
+			const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+
 			function mostrarToast(mensaje) {
 				$('#errorText').text(mensaje);
 				const toastElement = document.getElementById('liveErrorToast');
@@ -143,39 +148,120 @@
 				}
 			});
 
+			//acciones boton editar
 			$('.username-edit-btn').on('click', function(){
 				const $inputgroup = $(this).closest('.input-group');
 				const $input = $inputgroup.find('input');
 
-				$input.prop(disabled)
+				$input.removeAttr('disabled');//habilitar edicion de campo
+
 				$inputgroup.find('.username-edit-btn').addClass('d-none');
 				$inputgroup.find('.username-save-btn').removeClass('d-none');
 				$inputgroup.find('.username-cancel-btn').removeClass('d-none');
 			});
 
-
+			//acciones boton cancelar
 			$('.username-cancel-btn').on('click', function(){
 				const $inputgroup = $(this).closest('.input-group');
 				const $input = $inputgroup.find('input');
-				$input.val($input.attr('data-user-name'));
+
+				$input.attr('disabled','disabled')//disable input 
+				$input.val($input.attr('data-user-name'));//restaura valor anterior
+
 				$inputgroup.find('.username-edit-btn').removeClass('d-none');
 				$inputgroup.find('.username-save-btn').addClass('d-none');
 				$inputgroup.find('.username-cancel-btn').addClass('d-none');
 			});
 
+			//acciones boton guardar
+			$('.username-save-btn').on('click', function(){
+				const $inputgroup = $(this).closest('.input-group');
+				const $input = $inputgroup.find('input');
+				const userId = $(this).closest('tr').attr('data-user-id');
+				const username = $input.val();
 
+				$.ajax({
+					url: 'editUsername',
+					type: 'POST',
+					data: {
+						userId: userId,
+						username: username
+					},
+					beforeSend: function (xhr) {
+						xhr.setRequestHeader(csrfHeader, csrfToken);
+						$("#loading-spinner").removeClass("d-none");
+					},
+					success: function (response) {
+						if (response !== "OK") {
+							mostrarToast(response);
+						} else {
+							$input.attr('disabled','disabled')//disable input 
+
+							$inputgroup.find('.username-edit-btn').removeClass('d-none');
+							$inputgroup.find('.username-save-btn').addClass('d-none');
+							$inputgroup.find('.username-cancel-btn').addClass('d-none');
+						}
+					},
+					error: function () {
+						mostrarToast('Se ha producido un error inesperado');
+					},
+					complete: function() {
+						$("#loading-spinner").addClass("d-none");
+					}
+				});				
+			});
 
 			$('.mod-usuario-btn').on('click',function(){
-				$('#modificarUsuarioModal').modal('show');
+				const userId = $(this).closest('tr').attr('data-user-id');
+				$('#changePasswordUserid').val(userId);
+
+				$('#changePasswordModal').modal('show');
+			});
+
+			$("#changePasswordModal").on('shown.bs.modal', function(){//recargar formulario de cambio de contrasena
+				$.ajax({
+					url:"actualizaContrasena",
+					type:"GET",
+					beforeSend: function(){
+						$("#loading-spinner").removeClass("d-none");
+					},
+					success: function(data){
+						$('#changePasswordModalBody').html(data);
+					},
+					error:function(){
+						$('#changePasswordModalBody').html('<div class="alert alert-danger">Se ha producido un error inesperado.</div>');
+					},
+					complete: function(){
+						$("#loading-spinner").addClass("d-none");
+					}
+				});
+			});
+
+			$('#changePasswordBtn').on('click',function (e) {
+				$.ajax({
+					url:"actualizaContrasena",
+					type:"POST",
+					data:$('#changePasswordForm').serialize(),
+					beforeSend: function(){
+						$("#loading-spinner").removeClass("d-none");
+					},
+					success: function(data){
+						$('#changePasswordModalBody').html(data);
+					},
+					error:function(){
+						$('#changePasswordModalBody').html('<div class="alert alert-danger">Se ha producido un error inesperado.</div>');
+					},
+					complete: function() {
+						$("#loading-spinner").addClass("d-none");
+					}
+
+				});
 			});
 
 			$('.user-enabled-switch').on('change', function () {
 				const $switch = $(this);
-				const userId = $switch.attr('data-user-id');
-				const enabled = $switch.is(':checked');
-
-				const csrfToken = $('meta[name="_csrf"]').attr('content');
-				const csrfHeader = $('meta[name="_csrf_header"]').attr('content');
+				const userId = $(this).closest('tr').attr('data-user-id');
+				const enabled = $switch.is(':checked');				
 
 				$.ajax({
 					url: 'switchEnabledUser',
@@ -186,6 +272,7 @@
 					},
 					beforeSend: function (xhr) {
 						xhr.setRequestHeader(csrfHeader, csrfToken);
+						$("#loading-spinner").removeClass("d-none");
 					},
 					success: function (response) {
 						if (response !== "OK") {
@@ -196,6 +283,9 @@
 					error: function () {
 						$switch.prop('checked', !enabled);
 						mostrarToast('Se ha producido un error inesperado');
+					},
+					complete: function() {
+						$("#loading-spinner").addClass("d-none");
 					}
 
 				});

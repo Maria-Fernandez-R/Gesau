@@ -41,12 +41,18 @@ public class UserService {
 		return userRepository.save(user);
 	}
 
-	public UserEntity changePassword(String currentPassword, String newPassword, String confirmPassword) {
+	public UserEntity changePassword(Long userId, String currentPassword, String newPassword, String confirmPassword) {
 
-		UserEntity user = userRepository.findByUsername(getUserNameUsuarioLogeado()).orElse(null);
+		UserEntity user = userRepository.findById(userId).orElse(null);
+
+		boolean isAdmin = isAdmin(user);
 
 		if (user == null) {
 			throw new RuntimeException("Usuario no encontrado");
+		}
+
+		if(user.getId()!=userId && !isAdmin){//si no esta editando su propio usuario y no es un usuario administrador
+			throw new RuntimeException("No tiene permisos para realizar esta operación");
 		}
 
 		if (currentPassword == null || currentPassword.isBlank()) {
@@ -77,8 +83,17 @@ public class UserService {
 			throw new RuntimeException("La nueva contraseña no puede ser igual a la actual");
 		}
 
+
 		user.setPassword(passwordEncoder.encode(newPassword));
 		return userRepository.save(user);
+	}
+
+	private boolean isAdmin(UserEntity user) {
+		boolean isAdmin = false;
+		for (RoleEntity role : user.getRoles()) {
+			if(ROLE_ADMIN.equals(role.getName())) isAdmin=true;
+		}
+		return isAdmin;
 	}
 
 	public String getUserAndRoleUsuarioLogeado() {
@@ -121,6 +136,31 @@ public class UserService {
 
 		user.setEnabled(enabled);
 		userRepository.save(user);
+	}
+
+	public void updateUsername(Long userId, String username) {
+		UserEntity user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		String currentUsername = getUserNameUsuarioLogeado();
+
+		if (user.getUsername().equals(currentUsername)) {
+			throw new RuntimeException("No puedes modificar tu propio usuario");
+		}
+
+		user.setUsername(username);
+
+		userRepository.save(user);
+	}
+
+	public Long getUserIdUsuarioLogeado() {
+
+		String currentUsername = getUserNameUsuarioLogeado();
+
+		UserEntity user = userRepository.findByUsername(currentUsername)
+				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+		return user.getId();
 	}
 
 }
